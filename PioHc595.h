@@ -29,8 +29,8 @@ class PioHc595
     
     int pino_SCLK;
     int pino_SDOUT;
-    int pino_OUTPUT_LD;
-    int pino_OUTPUT_RESSET;
+    int pino_SDIN;
+    int pino_RESSET;
 
     int n_reg_SAIDAS;
     char * vetor_SAIDAS;
@@ -39,7 +39,7 @@ class PioHc595
     short  HEX16_to_BCD16 ( short HEX_16 );
 
   public:
-    PioHc595(int pino_SCLK, int pino_SDOUT, int pino_OUTPUT_LD, int pino_OUTPUT_RESSET, int total_SAIDAS);
+    PioHc595(int pino_SCLK, int pino_SDOUT, int pino_SDIN, int pino_RESSET, int total_SAIDAS);
     
     void atualizar_SAIDAS ( char *REG_SAIDAS );
     void desligar_SAIDAS ();
