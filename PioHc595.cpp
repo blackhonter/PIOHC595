@@ -6,12 +6,12 @@
 
 #include "PioHc595.h"
 
-PioHc595::PioHc595(int pino_SCLK, int pino_SDOUT, int pino_OUTPUT_LD, int pino_OUTPUT_RESSET, int total_SAIDAS) 
+PioHc595::PioHc595(int pino_SCLK, int pino_SDOUT, int pino_SDIN, int pino_RESSET, int total_SAIDAS) 
 { 
     this->pino_SCLK = pino_SCLK;
     this->pino_SDOUT = pino_SDOUT;
-    this->pino_OUTPUT_LD = pino_OUTPUT_LD;
-    this->pino_OUTPUT_RESSET = pino_OUTPUT_RESSET;
+    this->pino_SDIN = pino_SDIN;
+    this->pino_RESSET = pino_RESSET;
     
     this->total_SAIDAS = total_SAIDAS;
     this->n_reg_SAIDAS = total_SAIDAS/8;
@@ -20,13 +20,13 @@ PioHc595::PioHc595(int pino_SCLK, int pino_SDOUT, int pino_OUTPUT_LD, int pino_O
 
     digitalWrite ( pino_SDOUT, LOW ); // estado inicial do sinal "SDOUT".
     digitalWrite ( pino_SCLK, LOW );  // estado inicial do sinal "SCLK".
-    digitalWrite ( pino_OUTPUT_LD, LOW ); // estado inicial do sinal "OUTPUT_LD".
-    digitalWrite ( pino_OUTPUT_RESSET, LOW ); // estado inicial do sinal "OUT_RESSET".
+    digitalWrite ( pino_SDIN, LOW ); // estado inicial do sinal "SDIN".
+    digitalWrite ( pino_RESSET, LOW ); // estado inicial do sinal "OUT_RESSET".
   
     pinMode ( pino_SDOUT, OUTPUT );   // configura o pino do sinal "SDOUT".
     pinMode ( pino_SCLK, OUTPUT );    // configura o pino do sinal "SCLK".
-    pinMode ( pino_OUTPUT_LD, OUTPUT ); // configura o pino do sinal "OUTPUT_LD".
-    pinMode ( pino_OUTPUT_RESSET, OUTPUT ); // configura o pino do sinal "OUT_RESSET".
+    pinMode ( pino_SDIN, OUTPUT ); // configura o pino do sinal "SDIN".
+    pinMode ( pino_RESSET, OUTPUT ); // configura o pino do sinal "OUT_RESSET".
   
     desliga_SAIDAS ();
 }
@@ -71,14 +71,14 @@ void  PioHc595::atualizar_SAIDAS ( char *REG_SAIDAS )
 {
   char n;
 
-  digitalWrite ( pino_OUTPUT_LD, LOW ); // "pre-setting" do PCLK.
+  digitalWrite ( pino_SDIN, LOW ); // "pre-setting" do PCLK.
 
   for ( n = n_reg_SAIDAS; n>0; n-- )  // para cada Registro de Saida:
   {
     SAIDAS_SERIAL_OUT ( REG_SAIDAS [n-1] ); // envia o conteudo do Registro "n".
   }
 
-  digitalWrite ( pino_OUTPUT_LD, HIGH );  // atualiza o Registro fisico das Saidas.
+  digitalWrite ( pino_SDIN, HIGH );  // atualiza o Registro fisico das Saidas.
 }
 
 
@@ -99,10 +99,10 @@ void PioHc595::desligar_SAIDAS ()
   atualizar_SAIDAS ( vetor_SAIDAS ); // atualiza o estado fisico das Saidas.
 
   //informa resset
-  digitalWrite ( pino_OUTPUT_RESSET, HIGH );
+  digitalWrite ( pino_RESSET, HIGH );
   delayMicroseconds(1);
   
-  digitalWrite ( pino_OUTPUT_RESSET, LOW );
+  digitalWrite ( pino_RESSET, LOW );
   delayMicroseconds(1);
 }
 
