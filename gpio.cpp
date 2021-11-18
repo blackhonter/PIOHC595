@@ -23,7 +23,7 @@ int main (void)
 
 	wiringPiSetup();
 
-	PioHc595 m_gpio(0, 1, 2, 3, 16); //pino_SCLK, pino_SDOUT, pino_OUTPUT_LD, pino_OUT_RESSET, total_SAIDAS
+	PioHc595 m_gpio(0, 1, 2, 3, 16); //pino_SCLK, pino_SDOUT, pino_SDIN, pino_RESSET, total_SAIDAS
 	
 	/* ---------------------------------------------------------------------------------------------*/
 	/*
